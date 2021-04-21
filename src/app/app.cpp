@@ -2,10 +2,11 @@
 
 App::App() {
     UI ui;
+    CHIP8 chip8;
 };
 
 void App::run() {
-    ui.init();
+    ui.init(&chip8);
     while (ui.isRunning()) {
         ui.render();
     }

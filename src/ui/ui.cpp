@@ -4,7 +4,8 @@ UI::UI() {
     UIState state;
 }
 
-void UI::init() {
+void UI::init(CHIP8* system) {
+    this->system = system;
     glfwInit();
 
     const char* glsl_version = "#version 130";
@@ -45,7 +46,30 @@ void UI::render() {
     {
         if (ImGui::BeginMenu("File"))
         {
-            if (ImGui::MenuItem("Load ROM")) {}
+            if (ImGui::MenuItem("Load ROM")) {
+#ifdef _WIN32
+                OPENFILENAMEA ofile = { 0 };
+                char fpath[_MAX_PATH] = { 0 };
+
+                ofile.lStructSize = sizeof( ofile );
+                ofile.hwndOwner = GetActiveWindow();
+                ofile.lpstrFile = fpath;
+                ofile.nMaxFile = sizeof( fpath );
+                if ( GetOpenFileNameA( &ofile ) ) {
+                    reset(this->system);
+                    loadRom(this->system, fpath);
+                }
+#elif __gnu_linux__
+                char fpath[1024];
+                FILE* hFile = popen( "zenity --file-selection", "r" );
+                fgets( fpath, sizeof( fpath ), hFile );
+                if ( fpath[strlen( fpath ) - 1] == '\n' ) {
+                    fpath[strlen( fpath ) - 1] = 0;
+                }
+                reset(this->system);
+                loadRom(this->system, fpath);
+#endif
+            }
             ImGui::Separator();
             if (ImGui::MenuItem("About")) { this->state.aboutWindow = true; }
             ImGui::EndMenu();
