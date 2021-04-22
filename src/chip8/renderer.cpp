@@ -8,6 +8,12 @@ Renderer::Renderer() {
 
     this->indices[0] = 0;   this->indices[1] = 1;   this->indices[2] = 3;
     this->indices[3] = 1;   this->indices[4] = 2;   this->indices[5] = 3;
+
+    this->shader = Shader("src/shaders/chip8.vert", "src/shaders/chip8.frag");
+}
+
+void Renderer::init() {
+    this->shader.init();
 }
 
 void Renderer::render() {
@@ -26,8 +32,7 @@ void Renderer::render() {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->EBO);
 
-    Shader shader("src/shaders/chip8.vert", "src/shaders/chip8.frag");
-    shader.use();
+    this->shader.use();
 
     glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

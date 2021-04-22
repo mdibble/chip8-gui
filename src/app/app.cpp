@@ -6,9 +6,10 @@ App::App() {
 };
 
 void App::run() {
-    ui.init(&chip8);
-    while (ui.isRunning()) {
-        ui.render();
+    this->ui.init(&(this->chip8));
+    this->chip8.renderer.init();
+    while (this->ui.isRunning()) {
+        this->ui.render();
     }
-    ui.destroy();
+    this->ui.destroy();
 }

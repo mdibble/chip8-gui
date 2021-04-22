@@ -19,15 +19,25 @@ void checkCompileErrors(GLuint shader, std::string type) {
     }
 }
 
+Shader::Shader() {
+    this->vertPath = "";
+    this->fragPath = "";
+}
+
 Shader::Shader(const char* vertPath, const char* fragPath) {
+    this->vertPath = vertPath;
+    this->fragPath = fragPath;
+}
+
+void Shader::init() {
     std::string vertexCode, fragmentCode;
     std::ifstream vertFile, fragFile;
     vertFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
     fragFile.exceptions (std::ifstream::failbit | std::ifstream::badbit);
 
     try {
-        vertFile.open(vertPath);
-        fragFile.open(fragPath);
+        vertFile.open(this->vertPath);
+        fragFile.open(this->fragPath);
 
         std::stringstream vertShaderStream, fragShaderStream;
 

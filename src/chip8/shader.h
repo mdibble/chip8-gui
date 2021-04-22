@@ -9,8 +9,12 @@
 
 class Shader {
 private:
+    const char* vertPath;
+    const char* fragPath;
 public:
+    Shader();
     Shader(const char* vertPath, const char* fragPath);
+    void init();
     void use();
     unsigned int id;
 };
