@@ -48,9 +48,12 @@ void Renderer::render() {
 }
 
 void Renderer::clearCanvas() {
-    for (int i = 0; i < 64 * 32 * 3; i += 1) {
-        this->canvas[i] = 0;
+    for (int i = 0; i < 32; i += 1) {
+        for (int j = 0; j < 64; j += 1) {
+            this->display[i][j] = false;
+        }
     }
+    this->generateCanvas();
 }
 
 void Renderer::generateCanvas() {
@@ -68,11 +71,10 @@ void Renderer::generateCanvas() {
 
     for (int i = 0; i < 32; i += 1) {
         for (int j = 0; j < 64; j += 1) {
-            if (this->display[31 - i][j] == true) {
-                this->canvas[(i * 64 * 3) + ((j * 3) + 0)] = 255;
-                this->canvas[(i * 64 * 3) + ((j * 3) + 1)] = 255;
-                this->canvas[(i * 64 * 3) + ((j * 3) + 2)] = 255;
-            }
+            unsigned char val = (this->display[31 - i][j] == true ? 255 : 0);
+            this->canvas[(i * 64 * 3) + ((j * 3) + 0)] = val;
+            this->canvas[(i * 64 * 3) + ((j * 3) + 1)] = val;
+            this->canvas[(i * 64 * 3) + ((j * 3) + 2)] = val;
         }
     }
 }

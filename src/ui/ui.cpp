@@ -13,7 +13,7 @@ void UI::init(CHIP8* system) {
     // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 
-    this->window = glfwCreateWindow(1280, 720, "Test", NULL, NULL);
+    this->window = glfwCreateWindow(1440, 720, "Test", NULL, NULL);
     glfwMakeContextCurrent(this->window);
     glfwSwapInterval(1);
 
@@ -47,6 +47,7 @@ void UI::render() {
         if (ImGui::BeginMenu("File"))
         {
             if (ImGui::MenuItem("Load ROM")) { }
+            if (ImGui::MenuItem("Reset")) { Actions::reset(this->system); }
             ImGui::Separator();
             if (ImGui::MenuItem("About")) { this->state.aboutWindow = true; }
             ImGui::EndMenu();
@@ -60,8 +61,17 @@ void UI::render() {
     }
 
     if (this->state.debugWindow) {
+        ImGuiIO &io = ImGui::GetIO(); (void)io;
         ImGui::Begin("Debugger", &this->state.debugWindow);
-        ImGui::Text("Debug");
+        ImGui::Text("Emulator Information");
+        ImGui::Text("PC: 0x%.04x", this->system->pc);
+        ImGui::Text("Registers:");
+        for (int i = 0; i < 16; i += 1) {
+            ImGui::Text("V%02d: 0x%02x", i, this->system->r[0]);
+        }
+        ImGui::Separator();
+        ImGui::Text("Software Information");
+        ImGui::Text("Frame %d (%.1f FPS)", ImGui::GetFrameCount(), io.Framerate);
         ImGui::End();
     }
 
