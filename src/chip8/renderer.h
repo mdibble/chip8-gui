@@ -10,11 +10,13 @@ private:
 public:
     Renderer();
     Shader shader;
-    unsigned int VBO, EBO;
-    float positions[20];
+    unsigned int VBO, EBO, texture;
+    float positions[16];
     unsigned int indices[6];
-    bool canvas[32][64];
+    bool display[32][64];
+    unsigned char canvas[64 * 32 * 3];
     void render();
     void init();
     void clearCanvas();
+    void generateCanvas();
 };
