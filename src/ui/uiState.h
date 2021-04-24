@@ -4,4 +4,5 @@ struct UIState {
     UIState();
     bool debugWindow;
     bool aboutWindow;
+    bool memoryWindow;
 };

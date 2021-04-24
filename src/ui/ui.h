@@ -1,5 +1,11 @@
 #pragma once
 
+#ifdef _WIN32
+#include <Windows.h>
+#elif __gnu_linux__
+#include <byteswap.h>
+#endif
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include <imgui.h>

@@ -1,5 +1,7 @@
 #pragma once
 
+#include <fstream>
+
 #include "chip8.h"
 
 namespace Actions {
