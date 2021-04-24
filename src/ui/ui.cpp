@@ -42,41 +42,24 @@ void UI::render() {
     glfwPollEvents();
 
     ImGui::NewFrame();
-    if (ImGui::BeginMainMenuBar())
-    {
-        if (ImGui::BeginMenu("File"))
-        {
-            if (ImGui::MenuItem("Load ROM")) {
-#ifdef _WIN32
-                OPENFILENAMEA ofile = { 0 };
-                char fpath[_MAX_PATH] = { 0 };
-
-                ofile.lStructSize = sizeof( ofile );
-                ofile.hwndOwner = GetActiveWindow();
-                ofile.lpstrFile = fpath;
-                ofile.nMaxFile = sizeof( fpath );
-                if ( GetOpenFileNameA( &ofile ) ) {
-                    Actions::reset(this->system);
-                    Actions::loadRom(this->system, fpath);
-                }
-#elif __gnu_linux__
-                char fpath[1024];
-                FILE* hFile = popen( "zenity --file-selection", "r" );
-                fgets( fpath, sizeof( fpath ), hFile );
-                if ( fpath[strlen( fpath ) - 1] == '\n' ) {
-                    fpath[strlen( fpath ) - 1] = 0;
-                }
-                Actions::reset(this->system);
-                Actions::loadRom(this->system, fpath);
-#endif
-            }
-            if (ImGui::MenuItem("Reset")) { Actions::reset(this->system); }
+    if (ImGui::BeginMainMenuBar()) {
+        if (ImGui::BeginMenu("File")) {
+            if (ImGui::MenuItem("Load ROM")) { Actions::loadRom(this->system); }
             ImGui::Separator();
             if (ImGui::MenuItem("About")) { this->state.aboutWindow = true; }
             ImGui::EndMenu();
         }
-        if (ImGui::BeginMenu("Window"))
-        {
+        if (ImGui::BeginMenu("Edit")) {
+            if (this->system->running == true) {
+                if (ImGui::MenuItem("Stop")) { Actions::pause(this->system); }
+            }
+            else {
+                if (ImGui::MenuItem("Start")) { Actions::resume(this->system); }
+            }
+            if (ImGui::MenuItem("Reset")) { Actions::reset(this->system); }
+            ImGui::EndMenu();
+        }
+        if (ImGui::BeginMenu("Window")) {
             if (ImGui::MenuItem("Debugger")) { this->state.debugWindow = true; }
             if (ImGui::MenuItem("Memory")) { this->state.memoryWindow = true; }
             ImGui::EndMenu();
@@ -88,6 +71,7 @@ void UI::render() {
         ImGuiIO &io = ImGui::GetIO(); (void)io;
         ImGui::Begin("Debugger", &this->state.debugWindow);
         ImGui::Text("Emulator Information");
+        ImGui::Text("Running: %s", this->system->running == true ? "Yes" : "No");
         ImGui::Text("PC: 0x%04x", this->system->pc);
         ImGui::Text("Opcode: 0x%04x", (this->system->mem[this->system->pc] << 8) | (this->system->mem[this->system->pc + 1]));
         ImGui::Text("Stack Pointer: 0x%04x", this->system->sp);
@@ -96,9 +80,23 @@ void UI::render() {
             if (i != 0 && i % 4 != 0) {
                 ImGui::SameLine();
             }
-            ImGui::Text("V%01x: 0x%02x", i, this->system->r[0]);
+            ImGui::Text("V%01x: 0x%02x", i, this->system->r[i]);
             
         }
+        ImGui::Separator();
+        ImGui::Text("Emulator Controls");
+        if (this->system->running == true) {
+            if (ImGui::Button("Stop")) { Actions::pause(this->system); }
+        }
+        else {
+            if (ImGui::Button("Start")) { Actions::resume(this->system); }
+        }
+        ImGui::SameLine();
+        if (ImGui::Button("Reset")) { Actions::reset(this->system); }
+        ImGui::SameLine();
+        if (ImGui::Button("Step")) { Actions::step(this->system); }
+        ImGui::SameLine();
+        if (ImGui::Button("Load ROM")) { Actions::loadRom(this->system); }
         ImGui::Separator();
         ImGui::Text("Software Information");
         ImGui::Text("Frame %d (%.1f FPS)", ImGui::GetFrameCount(), io.Framerate);

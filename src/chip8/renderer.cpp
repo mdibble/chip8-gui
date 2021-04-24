@@ -53,7 +53,6 @@ void Renderer::clearCanvas() {
             this->display[i][j] = false;
         }
     }
-    this->generateCanvas();
 }
 
 void Renderer::generateCanvas() {
