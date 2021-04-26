@@ -3,3 +3,4 @@ imgui.ini
 .vscode/
 rom/*
 !rom/test.ch8
+!rom/test2.ch8

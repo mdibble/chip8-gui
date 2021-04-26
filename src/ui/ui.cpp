@@ -62,6 +62,7 @@ void UI::render() {
         if (ImGui::BeginMenu("Window")) {
             if (ImGui::MenuItem("Debugger")) { this->state.debugWindow = true; }
             if (ImGui::MenuItem("Memory")) { this->state.memoryWindow = true; }
+            if (ImGui::MenuItem("Display")) { this->state.displayWindow = true; }
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
@@ -75,6 +76,9 @@ void UI::render() {
         ImGui::Text("PC: 0x%04x", this->system->pc);
         ImGui::Text("Opcode: 0x%04x", (this->system->mem[this->system->pc] << 8) | (this->system->mem[this->system->pc + 1]));
         ImGui::Text("Stack Pointer: 0x%04x", this->system->sp);
+        ImGui::Text("I: 0x%04x", this->system->i);
+        ImGui::Text("Delay Timer: 0x%02x", this->system->dt);
+        ImGui::Text("Sound Timer: 0x%02x", this->system->st);
         ImGui::Text("Registers:");
         for (int i = 0; i < 16; i += 1) {
             if (i != 0 && i % 4 != 0) {
@@ -125,6 +129,25 @@ void UI::render() {
         ImGui::Begin("About", &this->state.aboutWindow);
         ImGui::Text("CHIP-8 Emulator");
         ImGui::Text("By Matthew Dibble (github.com/mdibble)");
+        ImGui::End();
+    }
+
+    if (this->state.displayWindow) {
+        ImGui::Begin("Display", &this->state.displayWindow);
+        for (int i = 0; i < 32; i += 1) {
+            for (int j = 0; j < 64; j += 1) {
+                if (system->renderer.display[i][j] == true) {
+                    ImGui::Text("@");
+                }
+                else {
+                    const ImVec4 black = { 0.0f, 0.0f, 0.0f, 1.0f };
+                    ImGui::TextColored(black, "@");
+                }
+                if (j != 63) {
+                    ImGui::SameLine();
+                }
+            }
+        }
         ImGui::End();
     }
 

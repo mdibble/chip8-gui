@@ -26,7 +26,6 @@ void Renderer::render() {
     glBufferData(GL_ARRAY_BUFFER, sizeof(this->positions), this->positions, GL_STATIC_DRAW);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(this->indices), this->indices, GL_STATIC_DRAW);
     
-    this->clearCanvas();
     this->generateCanvas();
 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, 64, 32, 0, GL_RGB, GL_UNSIGNED_BYTE, this->canvas);
@@ -56,18 +55,6 @@ void Renderer::clearCanvas() {
 }
 
 void Renderer::generateCanvas() {
-    this->display[4][10] = true;
-    this->display[5][10] = true;
-
-    this->display[4][14] = true;
-    this->display[5][14] = true;
-
-    this->display[8][10] = true;
-    this->display[9][11] = true;
-    this->display[9][12] = true;
-    this->display[9][13] = true;
-    this->display[8][14] = true;
-
     for (int i = 0; i < 32; i += 1) {
         for (int j = 0; j < 64; j += 1) {
             unsigned char val = (this->display[31 - i][j] == true ? 255 : 0);

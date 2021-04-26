@@ -12,6 +12,7 @@ void App::run() {
     while (this->ui.isRunning()) {
         this->chip8.cycle();
         if (this->chip8.frameComplete == true) {
+            this->chip8.renderer.render();
             this->ui.render();
             this->chip8.frameComplete = false;
         }
