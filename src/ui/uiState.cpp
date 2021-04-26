@@ -5,4 +5,5 @@ UIState::UIState() {
     this->aboutWindow = false;
     this->memoryWindow = false;
     this->displayWindow = false;
+    this->keypadWindow = false;
 }

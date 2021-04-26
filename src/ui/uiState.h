@@ -6,4 +6,5 @@ struct UIState {
     bool aboutWindow;
     bool memoryWindow;
     bool displayWindow;
+    bool keypadWindow;
 };

@@ -17,4 +17,5 @@ namespace Actions {
     void pause(CHIP8* system);
     void resume(CHIP8* system);
     void step(CHIP8* system);
+    void setKeypad(CHIP8* system, bool keypad[]);
 }

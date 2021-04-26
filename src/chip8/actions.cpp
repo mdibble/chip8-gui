@@ -22,27 +22,9 @@ namespace Actions {
         }
         reset(system);
 #endif
-        std::ifstream file;
-        file.exceptions (std::ifstream::failbit | std::ifstream::badbit);
+        FILE* file = fopen(fpath, "rb");
+        fread(&system->mem[0x200], 1, 0x800, file);
 
-        std::string fileData;
-
-        try {
-            file.open(fpath);
-
-            std::stringstream fileStream;
-
-            fileStream << file.rdbuf();
-            file.close();
-
-            fileData = fileStream.str();
-        }
-        catch (std::ifstream::failure &err) {
-        std::cout << "Error: file couldn't be read" << std::endl;
-        }
-        for (int i = 0; i < fileData.length(); i += 1) {
-            system->mem[0x200 + i] = fileData.at(i);
-        }
         loadFont(system);
     }
 
@@ -86,5 +68,11 @@ namespace Actions {
         system->running = true;
         system->cycle();
         system->running = false;
+    }
+
+    void setKeypad(CHIP8* system, bool keypad[]) {
+        for (int i = 0; i <= 16; i += 1) {
+            system->keypad[i] = keypad[i];
+        }
     }
 }

@@ -16,6 +16,7 @@ public:
     uint8_t dt;
     uint8_t st;
     uint16_t opcode;
+    bool keypad[0x0F];
     Renderer renderer;
     bool frameComplete;
     bool running;

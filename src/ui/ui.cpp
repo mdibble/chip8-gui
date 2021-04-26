@@ -36,10 +36,32 @@ void UI::destroy() {
     glfwTerminate();
 }
 
+void UI::updateKeypad() {
+    this->keypad[0] = glfwGetKey(this->window, GLFW_KEY_X);
+    this->keypad[1] = glfwGetKey(this->window, GLFW_KEY_1);
+    this->keypad[2] = glfwGetKey(this->window, GLFW_KEY_2);
+    this->keypad[3] = glfwGetKey(this->window, GLFW_KEY_3);
+    this->keypad[4] = glfwGetKey(this->window, GLFW_KEY_Q);
+    this->keypad[5] = glfwGetKey(this->window, GLFW_KEY_W);
+    this->keypad[6] = glfwGetKey(this->window, GLFW_KEY_E);
+    this->keypad[7] = glfwGetKey(this->window, GLFW_KEY_A);
+    this->keypad[8] = glfwGetKey(this->window, GLFW_KEY_S);
+    this->keypad[9] = glfwGetKey(this->window, GLFW_KEY_D);
+    this->keypad[10] = glfwGetKey(this->window, GLFW_KEY_Z);
+    this->keypad[11] = glfwGetKey(this->window, GLFW_KEY_C);
+    this->keypad[12] = glfwGetKey(this->window, GLFW_KEY_4);
+    this->keypad[13] = glfwGetKey(this->window, GLFW_KEY_R);
+    this->keypad[14] = glfwGetKey(this->window, GLFW_KEY_F);
+    this->keypad[15] = glfwGetKey(this->window, GLFW_KEY_V);
+}
+
 void UI::render() {
     ImGui_ImplOpenGL3_NewFrame();
     ImGui_ImplGlfw_NewFrame();
     glfwPollEvents();
+    updateKeypad();
+
+    Actions::setKeypad(this->system, this->keypad);
 
     ImGui::NewFrame();
     if (ImGui::BeginMainMenuBar()) {
@@ -63,6 +85,7 @@ void UI::render() {
             if (ImGui::MenuItem("Debugger")) { this->state.debugWindow = true; }
             if (ImGui::MenuItem("Memory")) { this->state.memoryWindow = true; }
             if (ImGui::MenuItem("Display")) { this->state.displayWindow = true; }
+            if (ImGui::MenuItem("Keypad")) { this->state.keypadWindow = true; }
             ImGui::EndMenu();
         }
         ImGui::EndMainMenuBar();
@@ -148,6 +171,28 @@ void UI::render() {
                 }
             }
         }
+        ImGui::End();
+    }
+
+    if (this->state.keypadWindow) {
+        const ImVec4 grey = { 0.5f, 0.5f, 0.5f, 1.0f };
+        ImGui::Begin("Keypad", &this->state.keypadWindow);
+        if (this->system->keypad[0x01] == true) { ImGui::Text("1"); } else { ImGui::TextColored(grey, "1"); } ImGui::SameLine();
+        if (this->system->keypad[0x02] == true) { ImGui::Text("2"); } else { ImGui::TextColored(grey, "2"); } ImGui::SameLine();
+        if (this->system->keypad[0x03] == true) { ImGui::Text("3"); } else { ImGui::TextColored(grey, "3"); } ImGui::SameLine();
+        if (this->system->keypad[0x0C] == true) { ImGui::Text("C"); } else { ImGui::TextColored(grey, "C"); }
+        if (this->system->keypad[0x04] == true) { ImGui::Text("4"); } else { ImGui::TextColored(grey, "4"); } ImGui::SameLine();
+        if (this->system->keypad[0x05] == true) { ImGui::Text("5"); } else { ImGui::TextColored(grey, "5"); } ImGui::SameLine();
+        if (this->system->keypad[0x06] == true) { ImGui::Text("6"); } else { ImGui::TextColored(grey, "6"); } ImGui::SameLine();
+        if (this->system->keypad[0x0D] == true) { ImGui::Text("D"); } else { ImGui::TextColored(grey, "D"); }
+        if (this->system->keypad[0x07] == true) { ImGui::Text("7"); } else { ImGui::TextColored(grey, "7"); } ImGui::SameLine();
+        if (this->system->keypad[0x08] == true) { ImGui::Text("8"); } else { ImGui::TextColored(grey, "8"); } ImGui::SameLine();
+        if (this->system->keypad[0x09] == true) { ImGui::Text("9"); } else { ImGui::TextColored(grey, "9"); } ImGui::SameLine();
+        if (this->system->keypad[0x0E] == true) { ImGui::Text("E"); } else { ImGui::TextColored(grey, "E"); }
+        if (this->system->keypad[0x0A] == true) { ImGui::Text("A"); } else { ImGui::TextColored(grey, "A"); } ImGui::SameLine();
+        if (this->system->keypad[0x00] == true) { ImGui::Text("0"); } else { ImGui::TextColored(grey, "0"); } ImGui::SameLine();
+        if (this->system->keypad[0x0B] == true) { ImGui::Text("B"); } else { ImGui::TextColored(grey, "B"); } ImGui::SameLine();
+        if (this->system->keypad[0x0F] == true) { ImGui::Text("F"); } else { ImGui::TextColored(grey, "F"); }
         ImGui::End();
     }
 

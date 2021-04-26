@@ -17,7 +17,9 @@ public:
     void init(CHIP8* system);
     void destroy();
     void render();
+    void updateKeypad();
     bool isRunning();
+    bool keypad[16];
     GLFWwindow* window;
     UIState state;
     CHIP8* system;
