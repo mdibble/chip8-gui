@@ -75,4 +75,16 @@ namespace Actions {
             system->keypad[i] = keypad[i];
         }
     }
+
+    void decreaseSpeed(CHIP8* system) {
+        if (system->systemSpeed > 1) {
+            system->systemSpeed -= 1;
+        }
+    }
+
+    void increaseSpeed(CHIP8* system) {
+        if (system->systemSpeed < 8) {
+            system->systemSpeed += 1;
+        }
+    }
 }

@@ -96,9 +96,10 @@ void UI::render() {
         ImGui::Begin("Debugger", &this->state.debugWindow);
         ImGui::Text("Emulator Information");
         ImGui::Text("Running: %s", this->system->running == true ? "Yes" : "No");
+        ImGui::Text("Cycle Count: %d", this->system->clockNum);
         ImGui::Text("PC: 0x%04x", this->system->pc);
         ImGui::Text("Opcode: 0x%04x", (this->system->mem[this->system->pc] << 8) | (this->system->mem[this->system->pc + 1]));
-        ImGui::Text("Stack Pointer: 0x%04x", this->system->sp);
+        ImGui::Text("Stack Pointer: 0x%01x", this->system->sp);
         ImGui::Text("I: 0x%04x", this->system->i);
         ImGui::Text("Delay Timer: 0x%02x", this->system->dt);
         ImGui::Text("Sound Timer: 0x%02x", this->system->st);
@@ -124,6 +125,11 @@ void UI::render() {
         if (ImGui::Button("Step")) { Actions::step(this->system); }
         ImGui::SameLine();
         if (ImGui::Button("Load ROM")) { Actions::loadRom(this->system); }
+        ImGui::Text("System Speed: %dx", this->system->systemSpeed);
+        ImGui::SameLine();
+        if (ImGui::Button("-")) { Actions::decreaseSpeed(this->system); }
+        ImGui::SameLine();
+        if (ImGui::Button("+")) { Actions::increaseSpeed(this->system); }
         ImGui::Separator();
         ImGui::Text("Software Information");
         ImGui::Text("Frame %d (%.1f FPS)", ImGui::GetFrameCount(), io.Framerate);

@@ -1,6 +1,8 @@
 #pragma once
 
 #include <stdint.h>
+#include <time.h>
+#include <stdlib.h>
 
 #include "renderer.h"
 
@@ -16,6 +18,8 @@ public:
     uint8_t dt;
     uint8_t st;
     uint16_t opcode;
+    uint64_t clockNum;
+    uint8_t systemSpeed;
     bool keypad[0x0F];
     Renderer renderer;
     bool frameComplete;

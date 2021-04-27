@@ -11,6 +11,8 @@ void CHIP8::reset() {
     this->sp = 0x00;
     this->dt = 0x00;
     this->st = 0x00;
+    this->clockNum = 0;
+    this->systemSpeed = 1;
     for (int i = 0; i <= 0x0F; i += 1) {
         this->r[i] = 0x00;
         this->stack[i] = 0x0000;
@@ -24,6 +26,8 @@ void CHIP8::cycle() {
         this->frameComplete = true;
         return;
     }
+
+    this->clockNum += 1;
 
     if (this->dt > 0) {
         this->dt -= 1;
@@ -197,11 +201,15 @@ void CHIP8::cycle() {
             break;
     }
     this->pc += 2;
-    this->frameComplete = true; // Slows down the emulator but good for debugging
+
+    if (this->clockNum % this->systemSpeed == 0) {
+        this->frameComplete = true;
+    }
 }
 
 void CHIP8::op_0nnn() {
-    throw(1);
+    // throw(1);
+    // Unused opcode
 }
 
 void CHIP8::op_00e0() {
@@ -360,11 +368,19 @@ void CHIP8::op_annn() {
 }
 
 void CHIP8::op_bnnn() {
-    throw(1);
+    uint16_t nnn = (this->opcode & 0x0FFF);
+
+    this->pc = nnn + this->r[0];
+    this->pc -= 2;
 }
 
 void CHIP8::op_cxnn() {
-    throw(1);
+    uint8_t x = (this->opcode & 0x0F00) >> 8;
+    uint8_t nn = (this->opcode & 0x00FF);
+
+    srand(time(NULL));
+    uint8_t randInt = rand();
+    this->r[x] = randInt & nn;
 }
 
 void CHIP8::op_dxyn() {
@@ -400,7 +416,7 @@ void CHIP8::op_dxyn() {
 void CHIP8::op_ex9e() {
     uint8_t x = (this->opcode & 0x0F00) >> 8;
 
-    if (this->keypad[x] == true) {
+    if (this->keypad[this->r[x]] == true) {
         this->pc += 2;
     }
 }
@@ -408,7 +424,7 @@ void CHIP8::op_ex9e() {
 void CHIP8::op_exa1() {
     uint8_t x = (this->opcode & 0x0F00) >> 8;
 
-    if (this->keypad[x] == false) {
+    if (this->keypad[this->r[x]] == false) {
         this->pc += 2;
     }
 }
@@ -420,7 +436,19 @@ void CHIP8::op_fx07() {
 }
 
 void CHIP8::op_fx0a() {
-    throw(1);
+    uint8_t x = (this->opcode & 0x0F00) >> 8;
+    bool keyFound = false;
+
+    for (int i = 0; i < 16; i += 1) {
+        if (this->keypad[i] == true) {
+            this->r[x] = i;
+            keyFound = true;
+        }
+    }
+
+    if (keyFound == false) {
+        this->pc -= 2;
+    }
 }
 
 void CHIP8::op_fx15() {
@@ -430,7 +458,9 @@ void CHIP8::op_fx15() {
 }
 
 void CHIP8::op_fx18() {
-    throw(1);
+    uint8_t x = (this->opcode & 0x0F00) >> 8;
+
+    this->st = this->r[x];
 }
 
 void CHIP8::op_fx1e() {

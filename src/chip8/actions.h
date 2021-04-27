@@ -18,4 +18,6 @@ namespace Actions {
     void resume(CHIP8* system);
     void step(CHIP8* system);
     void setKeypad(CHIP8* system, bool keypad[]);
+    void decreaseSpeed(CHIP8* system);
+    void increaseSpeed(CHIP8* system);
 }
