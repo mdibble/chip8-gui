@@ -3,7 +3,6 @@
 <div>
     <img src="./assets/invaders.png" width="300">
     <img src="./assets/debug.png" width="300">
-    <img src="./assets/test.png" width="300">
 </div>
 
 ## About
