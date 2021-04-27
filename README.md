@@ -1,9 +1,9 @@
 # CHIP-8 Emulator with GUI & Debugging Tools
 
 <div>
-    <img src="./assets/invaders.png" width="350">
-    <img src="./assets/debug.png" width="350">
-    <img src="./assets/test.png" width="350">
+    <img src="./assets/invaders.png" width="300">
+    <img src="./assets/debug.png" width="300">
+    <img src="./assets/test.png" width="300">
 </div>
 
 ## About
