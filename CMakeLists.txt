@@ -3,32 +3,34 @@ project(chip8-imgui)
 
 # GLAD
 add_library(glad STATIC
-    lib/glad/src/glad.c
+    vendor/glad/src/glad.c
 )
-target_include_directories(glad PUBLIC lib/glad/include)
+target_include_directories(glad PUBLIC vendor/glad/include)
 
 # GLFW
-add_subdirectory(lib/glfw)
-target_include_directories(glad PUBLIC lib/glfw/include)
+add_subdirectory(vendor/glfw)
+target_include_directories(glad PUBLIC vendor/glfw/include)
 
 # ImGui
 add_library(imgui STATIC
-    lib/imgui/imgui.cpp
-    lib/imgui/imgui_demo.cpp
-    lib/imgui/imgui_draw.cpp
-    lib/imgui/imgui_tables.cpp
-    lib/imgui/imgui_widgets.cpp
-    lib/imgui/backends/imgui_impl_glfw.cpp
-    lib/imgui/backends/imgui_impl_opengl3.cpp
+    vendor/imgui/imgui.cpp
+    vendor/imgui/imgui_demo.cpp
+    vendor/imgui/imgui_draw.cpp
+    vendor/imgui/imgui_tables.cpp
+    vendor/imgui/imgui_widgets.cpp
+    vendor/imgui/backends/imgui_impl_glfw.cpp
+    vendor/imgui/backends/imgui_impl_opengl3.cpp
 )
 target_include_directories(imgui
     PUBLIC
-    lib/glfw/include
-    lib/glad/include
-    lib/imgui
+    vendor/glfw/include
+    vendor/glad/include
+    vendor/imgui
 )
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS src/*.cpp)
+
+set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR})
 
 add_executable(chip8-imgui ${SOURCES})
 

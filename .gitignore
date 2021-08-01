@@ -1,6 +1,11 @@
 build/
 imgui.ini
 .vscode/
+.vs/
 rom/*
 !rom/test.ch8
 !rom/test2.ch8
+chip8-imgui.exe
+chip8-imgui.ilk
+chip8-imgui.pdb
+out/
